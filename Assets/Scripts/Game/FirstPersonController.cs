@@ -118,7 +118,8 @@ public class FirstPersonController : MonoBehaviour
     private void FixedUpdate()
     {
         GravityBody[] bodies = NBodySimulation.Bodies;
-        Vector3 strongestGravitionalPull = Vector3.zero;
+        Vector3 gravityOfNearestBody = Vector3.zero;
+        float nearestSurfaceDst = float.MaxValue;
 
         // Gravity
         foreach (GravityBody body in bodies) {
@@ -128,18 +129,38 @@ public class FirstPersonController : MonoBehaviour
             rb.AddForce (acceleration, ForceMode.Acceleration);
 
             // Find body with strongest gravitational pull 
-            if (acceleration.sqrMagnitude > strongestGravitionalPull.sqrMagnitude) {
-                strongestGravitionalPull = acceleration;
+            float dstToSurface = Mathf.Sqrt (sqrDst) - body.radius;
+
+            // Find body with strongest gravitational pull 
+            if (dstToSurface < nearestSurfaceDst) {
+                nearestSurfaceDst = dstToSurface;
+                gravityOfNearestBody = acceleration;
                 referenceBody = body;
             }
         }
 
         // Rotate to align with gravity up
-        Vector3 gravityUp = -strongestGravitionalPull.normalized;
+        Vector3 gravityUp = -gravityOfNearestBody.normalized;
         rb.rotation = Quaternion.FromToRotation (transform.up, gravityUp) * rb.rotation;
 
+
         // Move
+        Vector3 relativeVelocity = rb.velocity - referenceBody.velocity;
         rb.MovePosition (rb.position + smoothVelocity * Time.fixedDeltaTime);
+        if (IsGrounded())
+        {
+            rb.velocity = referenceBody.velocity + smoothVelocity * Time.deltaTime;
+        }
+        Debug.Log(rb.velocity);
+        /*
+        if (IsGrounded())
+        {
+            gameObject.transform.parent = referenceBody.transform;
+        }
+        else
+        {
+            gameObject.transform.parent = null;
+        }*/
     }
     
     public void SetVelocity (Vector3 velocity) {
