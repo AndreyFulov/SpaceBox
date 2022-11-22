@@ -10,7 +10,6 @@ public class NBodySimulation : MonoBehaviour
     private void Awake()
     {
         bodies = FindObjectsOfType<GravityBody>();
-        Time.fixedDeltaTime = 0.01f;
     }
 
     private void FixedUpdate()
