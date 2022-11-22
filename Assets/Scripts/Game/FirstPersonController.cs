@@ -126,11 +126,14 @@ public class FirstPersonController : MonoBehaviour
             float sqrDst = (body.Position - rb.position).sqrMagnitude;
             Vector3 forceDir = (body.Position - rb.position).normalized;
             Vector3 acceleration = forceDir * .0001f * body.mass / sqrDst;
-            rb.AddForce (acceleration, ForceMode.Acceleration);
+            //rb.AddForce (acceleration, ForceMode.Acceleration);
+            
+            Vector3 gravityForce = Gravitation.ComputeNonCelestialBodyForce(rb, body);
+            gravityForce *= Time.deltaTime;
+            rb.AddForce(gravityForce);
 
             // Find body with strongest gravitational pull 
             float dstToSurface = Mathf.Sqrt (sqrDst) - body.radius;
-
             // Find body with strongest gravitational pull 
             if (dstToSurface < nearestSurfaceDst) {
                 nearestSurfaceDst = dstToSurface;
@@ -147,11 +150,10 @@ public class FirstPersonController : MonoBehaviour
         // Move
         Vector3 relativeVelocity = rb.velocity - referenceBody.velocity;
         rb.MovePosition (rb.position + smoothVelocity * Time.fixedDeltaTime);
-        if (IsGrounded())
+        /*if (IsGrounded())
         {
             rb.velocity = referenceBody.velocity + smoothVelocity * Time.deltaTime;
-        }
-        Debug.Log(rb.velocity);
+        }*/
         /*
         if (IsGrounded())
         {

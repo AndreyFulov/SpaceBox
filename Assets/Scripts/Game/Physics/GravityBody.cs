@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -35,6 +36,7 @@ public class GravityBody : MonoBehaviour
         rb = GetComponent<Rigidbody> ();
         rb.mass = mass;
         velocity = initialVelocity;
+        
     }
     public void UpdateVelocity(GravityBody[] allBodies, float timeStep) {
         foreach (var otherBody in allBodies)
@@ -49,6 +51,22 @@ public class GravityBody : MonoBehaviour
             }
         }
     }
+
+    private void FixedUpdate()
+    {
+        GravityBody[] bodies = FindObjectsOfType<GravityBody>().Where(body => body != this).ToArray();
+        foreach (GravityBody body in bodies)
+        {
+            Vector3 gravityForce = Gravitation.ComputeCelestialBodyForce(rb, body.GetComponent<Rigidbody>());
+            gravityForce *= Time.deltaTime;
+            Debug.Log(gravityForce);
+            rb.AddForce(gravityForce);   
+        }
+        
+
+        
+    }
+
     public void UpdateVelocity (Vector3 acceleration, float timeStep) {
         velocity += acceleration * timeStep;
     }
@@ -64,7 +82,7 @@ public class GravityBody : MonoBehaviour
         }
     }
     void OnValidate () {
-        mass = surfaceGravity * radius * radius / .0001f;
+        //mass = surfaceGravity * radius * radius / .0001f;
         meshHolder = transform.GetChild (0);
         gameObject.name = bodyName;
     }
