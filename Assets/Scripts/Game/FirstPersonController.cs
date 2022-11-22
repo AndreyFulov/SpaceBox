@@ -152,8 +152,15 @@ public class FirstPersonController : MonoBehaviour
         rb.MovePosition (rb.position + smoothVelocity * Time.fixedDeltaTime);
         /*if (IsGrounded())
         {
+<<<<<<< HEAD
             rb.velocity = referenceBody.velocity + smoothVelocity * Time.deltaTime;
         }*/
+=======
+            rb.velocity = referenceBody.velocity + smoothVelocity * Time.fixedDeltaTime;
+        }
+        Debug.Log($"x:{relativeVelocity.x} y:{relativeVelocity.y} z:{relativeVelocity.z}");
+        //Debug.Log(relativeVelocity);
+>>>>>>> b05fdd2754e7a0d0261e233268dbe1af6ff1e78e
         /*
         if (IsGrounded())
         {
