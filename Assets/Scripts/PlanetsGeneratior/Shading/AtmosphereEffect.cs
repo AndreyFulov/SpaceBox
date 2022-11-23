@@ -20,7 +20,7 @@ public class AtmosphereEffect {
         }
 
         //generator.shading.SetAtmosphereProperties (material);
-        generator.body.shading.atmosphereSettings.SetProperties (material, generator.BodyScale);
+        generator.atmosphereSettings.SetProperties (material, generator.BodyScale);
 
         material.SetVector ("planetCentre", generator.transform.position);
         //material.SetFloat ("atmosphereRadius", (1 + 0.5f) * generator.BodyScale);

@@ -32,7 +32,8 @@ public class Planet : MonoBehaviour {
     public bool shapeSettingsFoldOut;
     [HideInInspector]
     public bool colorSettingsFoldOut;
-    
+
+    private AtmosphereEffect _atmosphereEffect = new AtmosphereEffect();
     private ShapeGenerator _shapeGenerator = new ShapeGenerator();
     ColorGenerator _colorGenerator = new ColorGenerator();
     
@@ -45,6 +46,7 @@ public class Planet : MonoBehaviour {
     {
         _shapeGenerator.UpdateSettings(shapeSettings);
         _colorGenerator.UpdateSettings(colorSettings);
+        _atmosphereEffect.UpdateSettings(this);
         if (meshFilters == null || meshFilters.Length == 0)
         {
             meshFilters = new MeshFilter[6];
