@@ -18,13 +18,13 @@ MonoBehaviour:
     useFirstLayerAsMask: 0
     noiseSettings:
       simpleNoiseSettings:
-        strength: 0.23
+        strength: 0.05
         numLayers: 4
-        baseRoughness: 0.28
-        roughness: 2.41
+        baseRoughness: 0.46
+        roughness: 2.95
         persistence: 0.5
         centre: {x: 0, y: 0, z: 0}
-        minValue: 1.25
+        minValue: 1.13
       rigidNoiseSettings:
         strength: 0.39
         numLayers: 4
