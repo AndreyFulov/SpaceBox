@@ -26,6 +26,7 @@ public class Planet : MonoBehaviour {
 
     public ShapeSettings shapeSettings;
     public ColorSettings colorSettings;
+    public AtmosphereSettings atmosphereSettings;
     
     [HideInInspector]
     public bool shapeSettingsFoldOut;
@@ -114,5 +115,13 @@ public class Planet : MonoBehaviour {
     void GenerateColors()
     {
         _colorGenerator.UpdateColors();
+    }
+    
+    public float BodyScale {
+        get {
+            // Body radius is determined by the celestial body class,
+            // which sets the local scale of the generator object (this object)
+            return transform.localScale.x;
+        }
     }
 }
