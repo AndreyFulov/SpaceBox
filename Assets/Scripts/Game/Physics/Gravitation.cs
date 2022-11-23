@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Gravitation : MonoBehaviour
 {
-    private const float GravitationalConstant = 50000000f;
+    private const float GravitationalConstant = 50000f;
     
             public static Vector3 ComputeCelestialBodyForce(Rigidbody firstBody, Rigidbody secondBody)
             {
@@ -24,7 +24,7 @@ public class Gravitation : MonoBehaviour
                 // Apply less gravity if the celestial body is far away
                 Vector3 positionsDifference = celestialBody.GetComponent<Rigidbody>().position - rigidbody.position;
                 force /= 10 * positionsDifference.magnitude;
-                force *= 1;
+                force *= 5;
     
                 return force;
             }

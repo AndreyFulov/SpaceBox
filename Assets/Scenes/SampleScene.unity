@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -299,10 +299,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d82e57c7e55585e49869209a47fd6868, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isStationary: 1
   mass: 14000
   radius: 200
   initialVelocity: {x: 0, y: 0, z: 0}
   surfaceGravity: 8
+  rb: {fileID: 0}
   bodyName: PlanetOne
 --- !u!54 &309506182
 Rigidbody:
@@ -313,7 +315,7 @@ Rigidbody:
   m_GameObject: {fileID: 309506179}
   serializedVersion: 2
   m_Mass: 14000
-  m_Drag: 0
+  m_Drag: 100
   m_AngularDrag: 0.05
   m_UseGravity: 0
   m_IsKinematic: 1
@@ -1924,7 +1926,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1007276846}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 49.7, z: -903.6}
+  m_LocalPosition: {x: 0, y: 49.7, z: -742}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3675,7 +3677,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2033191377}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -910}
+  m_LocalPosition: {x: 0, y: 0, z: -748.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3695,10 +3697,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d82e57c7e55585e49869209a47fd6868, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isStationary: 0
   mass: 1400
   radius: 50
-  initialVelocity: {x: 0, y: 11.78, z: 0}
+  initialVelocity: {x: 0, y: 25, z: 0}
   surfaceGravity: 3
+  rb: {fileID: 2033191380}
   bodyName: PlanetTwo
 --- !u!54 &2033191380
 Rigidbody:
@@ -3709,7 +3713,7 @@ Rigidbody:
   m_GameObject: {fileID: 2033191377}
   serializedVersion: 2
   m_Mass: 1400
-  m_Drag: 0
+  m_Drag: 100
   m_AngularDrag: 0.05
   m_UseGravity: 0
   m_IsKinematic: 1

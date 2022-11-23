@@ -41,6 +41,8 @@ public class FirstPersonController : MonoBehaviour
     GravityBody referenceBody;
     public Transform feet;
 
+
+
     void Start()
     {
         cameraT = Camera.main.transform;
@@ -120,6 +122,7 @@ public class FirstPersonController : MonoBehaviour
         GravityBody[] bodies = NBodySimulation.Bodies;
         Vector3 gravityOfNearestBody = Vector3.zero;
         float nearestSurfaceDst = float.MaxValue;
+        Vector3 gravityForce = new Vector3();
 
         // Gravity
         foreach (GravityBody body in bodies) {
@@ -128,9 +131,10 @@ public class FirstPersonController : MonoBehaviour
             Vector3 acceleration = forceDir * .0001f * body.mass / sqrDst;
             //rb.AddForce (acceleration, ForceMode.Acceleration);
             
-            Vector3 gravityForce = Gravitation.ComputeNonCelestialBodyForce(rb, body);
+            gravityForce = Gravitation.ComputeNonCelestialBodyForce(rb, body);
             gravityForce *= Time.deltaTime;
-            rb.AddForce(gravityForce);
+            //smoothVelocity += gravityForce * Time.fixedDeltaTime;
+            
 
             // Find body with strongest gravitational pull 
             float dstToSurface = Mathf.Sqrt (sqrDst) - body.radius;
@@ -140,36 +144,25 @@ public class FirstPersonController : MonoBehaviour
                 gravityOfNearestBody = acceleration;
                 referenceBody = body;
             }
+            rb.velocity = referenceBody.velocity + smoothVelocity * Time.deltaTime;
+            rb.AddForce(gravityForce * 100);
+            Debug.Log($"Planet: {body.name} Force: {gravityForce} Velocity: {smoothVelocity}");
+            
         }
 
         // Rotate to align with gravity up
         Vector3 gravityUp = -gravityOfNearestBody.normalized;
         rb.rotation = Quaternion.FromToRotation (transform.up, gravityUp) * rb.rotation;
 
-
+        Vector3 relativeVelocity = referenceBody.velocity - rb.velocity;
         // Move
-        Vector3 relativeVelocity = rb.velocity - referenceBody.velocity;
         rb.MovePosition (rb.position + smoothVelocity * Time.fixedDeltaTime);
         /*if (IsGrounded())
         {
-<<<<<<< HEAD
             rb.velocity = referenceBody.velocity + smoothVelocity * Time.deltaTime;
         }*/
-=======
-            rb.velocity = referenceBody.velocity + smoothVelocity * Time.fixedDeltaTime;
-        }
-        Debug.Log($"x:{relativeVelocity.x} y:{relativeVelocity.y} z:{relativeVelocity.z}");
+
         //Debug.Log(relativeVelocity);
->>>>>>> b05fdd2754e7a0d0261e233268dbe1af6ff1e78e
-        /*
-        if (IsGrounded())
-        {
-            gameObject.transform.parent = referenceBody.transform;
-        }
-        else
-        {
-            gameObject.transform.parent = null;
-        }*/
     }
     
     public void SetVelocity (Vector3 velocity) {

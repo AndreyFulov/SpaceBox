@@ -22,12 +22,13 @@ public class GravityBody : MonoBehaviour
     }
 */
 
+    public bool isStationary = false;
     public float mass;
     public float radius;
     public Vector3 initialVelocity;
     public float surfaceGravity;
     public Vector3 velocity { get; private set; }
-    private Rigidbody rb;
+    public Rigidbody rb;
     Transform meshHolder;
     public string bodyName = "Unnamed";
 
@@ -36,18 +37,24 @@ public class GravityBody : MonoBehaviour
         rb = GetComponent<Rigidbody> ();
         rb.mass = mass;
         velocity = initialVelocity;
-        
+        rb.velocity = initialVelocity;
+
     }
     public void UpdateVelocity(GravityBody[] allBodies, float timeStep) {
         foreach (var otherBody in allBodies)
         {
-            if (otherBody != this)
+            if (otherBody != this && !isStationary)
             {
+                /*
                 float sqrDst = (otherBody.GetComponent<Rigidbody>().position - GetComponent<Rigidbody>().position).sqrMagnitude;
                 Vector3 forceDir = (otherBody.GetComponent<Rigidbody>().position - GetComponent<Rigidbody>().position).normalized;
                 Vector3 force = forceDir * .0001f * mass * otherBody.mass / sqrDst;
                 Vector3 acceleration = force / mass;
-                velocity += acceleration * timeStep;
+                velocity += acceleration * timeStep;*/
+                
+                Vector3 gravityForce = Gravitation.ComputeCelestialBodyForce(rb, otherBody.GetComponent<Rigidbody>());
+                gravityForce *= Time.deltaTime;
+                velocity += gravityForce * Time.fixedDeltaTime;
             }
         }
     }
@@ -57,10 +64,6 @@ public class GravityBody : MonoBehaviour
         GravityBody[] bodies = FindObjectsOfType<GravityBody>().Where(body => body != this).ToArray();
         foreach (GravityBody body in bodies)
         {
-            Vector3 gravityForce = Gravitation.ComputeCelestialBodyForce(rb, body.GetComponent<Rigidbody>());
-            gravityForce *= Time.deltaTime;
-            Debug.Log(gravityForce);
-            rb.AddForce(gravityForce);   
         }
         
 
@@ -73,7 +76,7 @@ public class GravityBody : MonoBehaviour
 
     public void UpdatePosition(float timestep)
     {
-        rb.position += velocity * timestep;
+        rb.MovePosition(rb.position+ velocity * timestep);
     }
     
     public Vector3 Position {
